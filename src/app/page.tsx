@@ -23,7 +23,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900 overflow-hidden transition-colors duration-300 pt-16 md:pt-20"
+        className="relative min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900 overflow-hidden transition-colors duration-300 pt-16 md:pt-0"
       >
         {/* Floating Background Elements */}
         <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-emerald-200/40 dark:bg-emerald-500/20 rounded-full blur-3xl animate-float-slow"></div>
