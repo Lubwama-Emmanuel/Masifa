@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { Header } from "@/components/Header";
 
@@ -724,36 +725,36 @@ export default function ReferralsPage() {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a
+                  <Link
                     href="/"
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/about"
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/homes"
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     Our Homes
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/contact"
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
