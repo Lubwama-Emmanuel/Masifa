@@ -1,116 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import Link from "next/link";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
-export default function Home() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [isScrolling, setIsScrolling] = useState(false);
-
-  // Intersection observers for each section
-  const [aboutRef, aboutIntersecting, aboutHasIntersected] =
+export default function HomePage() {
+  const [heroRef] = useIntersectionObserver();
+  const [statsRef, statsHasIntersected] = useIntersectionObserver();
+  const [galleryRef, galleryHasIntersected] = useIntersectionObserver();
+  const [testimonialsRef, testimonialsHasIntersected] =
     useIntersectionObserver();
-  const [homesRef, homesIntersecting, homesHasIntersected] =
-    useIntersectionObserver();
-  const [teamRef, teamIntersecting, teamHasIntersected] =
-    useIntersectionObserver();
-  const [careersRef, careersIntersecting, careersHasIntersected] =
-    useIntersectionObserver();
-  const [contactRef, contactIntersecting, contactHasIntersected] =
-    useIntersectionObserver();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-
-      // Set scrolling state based on scroll position, not just scroll activity
-      setIsScrolling(scrollY > 50);
-
-      // Update active section based on scroll position
-      const sections = ["home", "about", "homes", "team", "careers", "contact"];
-      const scrollPosition = scrollY + 100;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section) {
-          const sectionTop = section.offsetTop;
-          if (scrollPosition >= sectionTop) {
-            setActiveSection(sections[i]);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(sectionId);
-    }
-  };
+  const [featuresRef, featuresHasIntersected] = useIntersectionObserver();
+  const [impactRef, impactHasIntersected] = useIntersectionObserver();
+  const [ctaRef] = useIntersectionObserver();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50">
-      {/* Floating Navigation */}
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolling
-            ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-white/20"
-            : "bg-transparent backdrop-blur-none"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center animate-pulse-glow">
-                <span className="text-white font-bold text-lg">M</span>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-700 bg-clip-text text-transparent font-heading">
-                Masifa Group
-              </span>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              {[
-                { id: "home", label: "Home" },
-                { id: "about", label: "About" },
-                { id: "homes", label: "Our Homes" },
-                { id: "team", label: "Team" },
-                { id: "careers", label: "Careers" },
-                { id: "contact", label: "Contact" },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                    activeSection === item.id
-                      ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg"
-                      : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-600"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900 transition-colors duration-300">
+      <Header />
 
       {/* Hero Section */}
       <section
-        id="home"
-        className="relative min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden"
+        ref={heroRef}
+        className="relative min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900 overflow-hidden transition-colors duration-300 pt-16 md:pt-20"
       >
         {/* Floating Background Elements */}
-        <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-emerald-200/40 rounded-full blur-3xl animate-float-slow"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-72 h-72 bg-teal-200/40 rounded-full blur-3xl animate-float-slow delay-500"></div>
-        <div className="absolute top-1/2 right-1/4 w-52 h-52 bg-cyan-200/40 rounded-full blur-3xl animate-float-slow delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-emerald-200/40 rounded-full blur-3xl animate-float-slow delay-1500"></div>
+        <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-emerald-200/40 dark:bg-emerald-500/20 rounded-full blur-3xl animate-float-slow"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-72 h-72 bg-teal-200/40 dark:bg-teal-500/20 rounded-full blur-3xl animate-float-slow delay-500"></div>
+        <div className="absolute top-1/2 right-1/4 w-52 h-52 bg-cyan-200/40 dark:bg-cyan-500/20 rounded-full blur-3xl animate-float-slow delay-1000"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-emerald-200/40 dark:bg-emerald-500/20 rounded-full blur-3xl animate-float-slow delay-1500"></div>
 
         <div className="relative z-10 min-h-screen flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -118,303 +37,143 @@ export default function Home() {
               {/* Left Content */}
               <div className="space-y-8 animate-fade-in-left">
                 <div className="space-y-6">
-                  <div className="inline-flex items-center px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold animate-slide-in-top">
+                  <div className="inline-flex items-center px-3 py-2 md:px-4 md:py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full text-xs md:text-sm font-semibold animate-slide-in-top">
                     <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></span>
-                    OFSTED Registered • Since 2020
+                    <span className="hidden sm:inline">
+                      OFSTED Registered • Since 2020
+                    </span>
+                    <span className="sm:hidden">OFSTED Registered</span>
                   </div>
 
-                  <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight font-display">
-                    Where Hope Meets{" "}
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white leading-tight font-display">
+                    We Grow{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      Home
+                      Together
                     </span>
                   </h1>
 
-                  <p className="text-xl md:text-2xl text-gray-700 leading-relaxed font-heading">
-                    Empowering Young Lives, Building Brighter Futures
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed font-heading">
+                    Specialized SEMH/EBD Care for Young People Aged 7-17
                   </p>
 
-                  <p className="text-lg text-gray-600 leading-relaxed font-sans">
-                    Creating safe, nurturing environments where young people can
-                    flourish, grow, and build the foundation for their brightest
-                    future.
+                  <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-sans">
+                    At Masifa, we believe that when the right environment is
+                    provided, the ability for growth is possible. We create
+                    safe, secure and nurturing environments designed to harness,
+                    develop and sustain the hopes, talents and aspirations of
+                    children.
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button
-                    onClick={() => scrollToSection("homes")}
-                    className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Link
+                    href="/homes"
+                    className="group relative px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                   >
-                    Discover Our Homes
-                    <span className="absolute inset-0 rounded-2xl ring-2 ring-offset-2 ring-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  </button>
-                  <button
-                    onClick={() => scrollToSection("contact")}
-                    className="px-8 py-4 border-2 border-emerald-500 text-emerald-600 rounded-2xl font-semibold text-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 transform hover:scale-105 font-heading"
+                    Discover Aylett Close
+                    <span className="ml-2 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
+                  </Link>
+                  <Link
+                    href="/referrals"
+                    className="group relative px-6 py-3 sm:px-8 sm:py-4 bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 border-2 border-emerald-600 dark:border-emerald-400 rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                   >
-                    Get In Touch
-                  </button>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-emerald-600 font-display">
-                      7-17
-                    </div>
-                    <div className="text-sm text-gray-600 font-sans">
-                      Age Range
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-teal-600 font-display">
-                      24/7
-                    </div>
-                    <div className="text-sm text-gray-600 font-sans">
-                      Care Support
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-cyan-600 font-display">
-                      100%
-                    </div>
-                    <div className="text-sm text-gray-600 font-sans">
-                      Dedicated
-                    </div>
-                  </div>
+                    Make a Referral
+                    <span className="ml-2 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
+                  </Link>
                 </div>
               </div>
 
-              {/* Right Image */}
-              <div className="relative animate-fade-in-right">
+              {/* Right Content - Enhanced Image Gallery */}
+              <div className="animate-fade-in-right">
                 <div className="relative">
-                  {/* Main Image */}
-                  <div className="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                    <Image
-                      src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Happy children and caregivers in a supportive environment"
-                      width={600}
-                      height={700}
-                      className="object-cover"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/20 to-transparent"></div>
-                  </div>
-
-                  {/* Floating Cards */}
-                  <div className="absolute -top-6 -left-6 bg-white p-6 rounded-2xl shadow-xl animate-float-slow">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">🏠</span>
-                      </div>
-                      <div>
-                        <div className="font-bold text-gray-900 font-heading">
-                          Safe Homes
-                        </div>
-                        <div className="text-sm text-gray-600 font-sans">
-                          OFSTED Approved
-                        </div>
-                      </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <Image
+                        src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        alt="Happy young people"
+                        width={300}
+                        height={200}
+                        className="rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+                      />
+                      <Image
+                        src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        alt="Learning environment"
+                        width={300}
+                        height={150}
+                        className="rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+                      />
+                    </div>
+                    <div className="space-y-4 pt-8">
+                      <Image
+                        src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        alt="Outdoor activities"
+                        width={300}
+                        height={150}
+                        className="rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+                      />
+                      <Image
+                        src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        alt="Family environment"
+                        width={300}
+                        height={200}
+                        className="rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300"
+                      />
                     </div>
                   </div>
-
-                  <div
-                    className="absolute -bottom-6 -right-6 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-xl text-white animate-float-slow"
-                    style={{ animationDelay: "1s" }}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">❤️</span>
-                      </div>
-                      <div>
-                        <div className="font-bold font-heading">
-                          Caring Team
-                        </div>
-                        <div className="text-sm opacity-90 font-sans">
-                          Expert Professionals
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Decorative Elements */}
-                  <div className="absolute top-1/4 -right-8 w-16 h-16 bg-emerald-200 rounded-full blur-xl animate-pulse"></div>
-                  <div className="absolute bottom-1/4 -left-8 w-20 h-20 bg-teal-200 rounded-full blur-xl animate-pulse delay-1000"></div>
+                  <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full opacity-20 animate-pulse"></div>
+                  <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full opacity-20 animate-pulse delay-1000"></div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle">
-          <div className="w-6 h-10 border-2 border-emerald-500 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-emerald-500 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Statistics Section */}
       <section
-        id="about"
-        ref={aboutRef}
-        className={`py-24 bg-white relative overflow-hidden transition-all duration-1000 ${
-          aboutHasIntersected
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-20"
-        }`}
+        ref={statsRef}
+        className="py-20 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className={`text-center mb-20 transition-all duration-1000 delay-300 ${
-              aboutHasIntersected
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            }`}
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-3xl blur-3xl"></div>
-              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
-                <h2 className="text-6xl font-bold text-gray-900 mb-8 font-display text-center">
-                  Our{" "}
-                  <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-gradient-shift">
-                    Mission
-                  </span>
-                </h2>
-                <p className="text-2xl text-gray-700 max-w-5xl mx-auto leading-relaxed font-sans text-center mb-8">
-                  At Masifa Group, we believe every young person deserves a
-                  chance to thrive. We create environments where hope, healing,
-                  and growth flourish.
-                </p>
-                <div className="text-center">
-                  <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full text-lg font-semibold shadow-lg animate-pulse-glow">
-                    <span className="w-3 h-3 bg-white rounded-full mr-3 animate-pulse"></span>
-                    Transforming Lives, Building Futures
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-emerald-600 font-display">
-                  4+
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Years of Excellence
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-teal-600 font-display">
-                  50+
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Young Lives Transformed
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-600 font-display">
-                  100%
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  OFSTED Compliant
-                </div>
-              </div>
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Our Impact in Numbers
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              Making a real difference in young people&apos;s lives every day
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-4 gap-8">
             {[
-              {
-                icon: "🏠",
-                title: "Safe Havens",
-                description:
-                  "Creating secure, loving homes where young people feel valued and protected.",
-                details:
-                  "Our homes provide 24/7 supervision, secure environments, and personalized care plans tailored to each young person&apos;s needs.",
-                features: [
-                  "24/7 Supervision",
-                  "Secure Environment",
-                  "Personalized Care",
-                ],
-                image:
-                  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-              },
-              {
-                icon: "🌱",
-                title: "Growth & Development",
-                description:
-                  "Nurturing potential through education, therapy, and life skills development.",
-                details:
-                  "We provide educational support, therapeutic interventions, and essential life skills training to prepare young people for independent living.",
-                features: [
-                  "Educational Support",
-                  "Therapeutic Care",
-                  "Life Skills Training",
-                ],
-                image:
-                  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-              },
-              {
-                icon: "🤝",
-                title: "Community Support",
-                description:
-                  "Building bridges with families, schools, and communities for lasting success.",
-                details:
-                  "We work closely with families, schools, and local communities to ensure young people have the support network they need for long-term success.",
-                features: [
-                  "Family Reunification",
-                  "School Partnerships",
-                  "Community Integration",
-                ],
-                image:
-                  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-              },
-            ].map((item, index) => (
+              { number: "100%", label: "OFSTED Compliant", icon: "🏆" },
+              { number: "24/7", label: "Support Available", icon: "🛡️" },
+              { number: "2", label: "Max Young People", icon: "👥" },
+              { number: "4+", label: "Years Experience", icon: "📅" },
+            ].map((stat, index) => (
               <div
                 key={index}
-                className={`group text-center p-8 rounded-3xl hover:bg-gradient-to-br from-emerald-50 to-teal-50 transition-all duration-500 transform hover:scale-105 ${
-                  aboutHasIntersected
+                className={`text-center group ${
+                  statsHasIntersected
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-20"
-                }`}
-                style={{
-                  transitionDelay: `${index * 200 + 500}ms`,
-                  transitionDuration: "800ms",
-                }}
+                } transition-all duration-1000`}
+                style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <div className="relative mb-6 overflow-hidden rounded-2xl">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={300}
-                    height={200}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-600/20 to-transparent"></div>
-                </div>
-                <div className="text-6xl mb-6 group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
-                  {item.icon}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-heading">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed font-sans mb-4">
-                  {item.description}
-                </p>
-                <p className="text-sm text-gray-500 mb-4 font-sans">
-                  {item.details}
-                </p>
-                <div className="space-y-2">
-                  {item.features.map((feature, featureIndex) => (
-                    <div
-                      key={featureIndex}
-                      className="flex items-center text-sm text-emerald-600"
-                    >
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
-                      {feature}
-                    </div>
-                  ))}
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    {stat.icon}
+                  </div>
+                  <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2 font-heading">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-300 font-semibold">
+                    {stat.label}
+                  </div>
                 </div>
               </div>
             ))}
@@ -422,781 +181,680 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Homes Section */}
+      {/* Image Gallery Section */}
       <section
-        id="homes"
-        ref={homesRef}
-        className={`py-24 bg-gradient-to-br from-emerald-50 to-teal-50 relative transition-all duration-1000 ${
-          homesHasIntersected
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-20"
-        }`}
+        ref={galleryRef}
+        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className={`text-center mb-20 transition-all duration-1000 delay-300 ${
-              homesHasIntersected
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            }`}
-          >
-            <h2 className="text-5xl font-bold text-gray-900 mb-6 font-display">
-              Aylett Close
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Our Beautiful Home
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-sans">
-              A beautiful, purpose-built home where young people aged 7-17 can
-              find stability, support, and the tools they need to succeed.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              A warm, welcoming environment designed to feel like home
             </p>
-            <div className="mt-8 grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 font-display">
-                  3
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                alt: "Comfortable living space",
+                title: "Living Areas",
+                description:
+                  "Spacious, comfortable spaces for relaxation and socializing",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                alt: "Study and learning space",
+                title: "Study Rooms",
+                description:
+                  "Dedicated spaces for learning and educational support",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                alt: "Outdoor activities",
+                title: "Outdoor Spaces",
+                description:
+                  "Beautiful gardens and outdoor areas for recreation",
+              },
+            ].map((image, index) => (
+              <div
+                key={index}
+                className={`group cursor-pointer ${
+                  galleryHasIntersected
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-20"
+                } transition-all duration-1000`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={400}
+                    height={300}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <h3 className="text-xl font-bold mb-2 font-heading">
+                        {image.title}
+                      </h3>
+                      <p className="text-sm opacity-90">{image.description}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600 font-sans">Bedrooms</div>
               </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-teal-600 font-display">
-                  24/7
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Care Support
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section
+        ref={testimonialsRef}
+        className="py-20 bg-gradient-to-br from-slate-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              What People Say
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              Hear from those who have experienced our care
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                quote:
+                  "The team at Masifa has been incredible. They've helped my child grow in ways I never thought possible.",
+                author: "Sarah M.",
+                role: "Parent",
+                avatar: "👩‍💼",
+              },
+              {
+                quote:
+                  "The small group setting makes such a difference. It feels like a real family here.",
+                author: "James L.",
+                role: "Young Person",
+                avatar: "👦",
+              },
+              {
+                quote:
+                  "Professional, caring, and truly dedicated to making a positive impact in young people's lives.",
+                author: "Dr. Emma R.",
+                role: "Social Worker",
+                avatar: "👩‍⚕️",
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className={`bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 ${
+                  testimonialsHasIntersected
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-20"
+                }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="text-4xl mb-4">{testimonial.avatar}</div>
+                <blockquote className="text-gray-700 dark:text-gray-300 mb-6 font-sans italic">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </blockquote>
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <div className="font-semibold text-gray-900 dark:text-white">
+                    {testimonial.author}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {testimonial.role}
+                  </div>
                 </div>
               </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-cyan-600 font-display">
-                  OFSTED
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Registered
-                </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Overview */}
+      <section
+        ref={featuresRef}
+        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Why Choose Masifa Group?
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              We provide specialized care that makes a real difference in young
+              people&apos;s lives.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🏠",
+                title: "Home-Like Environment",
+                description:
+                  "Comfortable, modern facilities that feel like a real home rather than an institution.",
+                link: "/homes",
+                color: "from-emerald-500 to-emerald-600",
+              },
+              {
+                icon: "👥",
+                title: "Small Group Living",
+                description:
+                  "Maximum of 2 young people ensures personalized attention and a family-like atmosphere.",
+                link: "/about",
+                color: "from-teal-500 to-teal-600",
+              },
+              {
+                icon: "📚",
+                title: "Educational Support",
+                description:
+                  "Dedicated study areas and support for educational goals and learning.",
+                link: "/activities",
+                color: "from-blue-500 to-blue-600",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className={`${
+                  featuresHasIntersected
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-20"
+                } transition-all duration-1000`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <Link href={feature.link} className="block group">
+                  <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 h-full">
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6`}
+                    >
+                      <span className="text-2xl">{feature.icon}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 font-heading group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed font-sans mb-4">
+                      {feature.description}
+                    </p>
+                    <div className="text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform">
+                      Learn More →
+                    </div>
+                  </div>
+                </Link>
               </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 font-display">
-                  7-17
-                </div>
-                <div className="text-sm text-gray-600 font-sans">Age Range</div>
-              </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Impact Section */}
+      <section
+        ref={impactRef}
+        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Our Impact Stories
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              Real stories of transformation and growth
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <div
-                className={`p-8 bg-white rounded-3xl shadow-xl transition-all duration-800 ${
-                  homesHasIntersected
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-10"
-                }`}
-                style={{ transitionDelay: "600ms" }}
-              >
-                <div className="relative mb-6">
-                  <Image
-                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                    alt="Beautiful home exterior"
-                    width={400}
-                    height={250}
-                    className="w-full h-64 object-cover rounded-2xl"
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-heading">
-                  🏡 Home Features
-                </h3>
-                <ul className="space-y-3 text-gray-600 font-sans">
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></span>
-                    3 bedrooms with private spaces
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></span>
-                    Beautiful garden and outdoor spaces
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></span>
-                    Study areas and quiet spaces
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></span>
-                    Modern facilities and safety features
-                  </li>
-                </ul>
-              </div>
-
-              <div
-                className={`p-8 bg-white rounded-3xl shadow-xl transition-all duration-800 ${
-                  homesHasIntersected
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-10"
-                }`}
-                style={{ transitionDelay: "800ms" }}
-              >
-                <div className="relative mb-6">
-                  <Image
-                    src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                    alt="Canvey Island location"
-                    width={400}
-                    height={250}
-                    className="w-full h-64 object-cover rounded-2xl"
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 font-heading">
-                  📍 Location
-                </h3>
-                <p className="text-gray-600 mb-4 font-sans">
-                  6 Aylett Close, Canvey Island, SS8 8AN
-                </p>
-                <p className="text-gray-600 font-sans">
-                  Perfectly positioned with easy access to:
-                </p>
-                <ul className="mt-3 space-y-2 text-gray-600 font-sans">
-                  <li>• Local schools and colleges</li>
-                  <li>• Shopping centers and amenities</li>
-                  <li>• Parks and recreational facilities</li>
-                  <li>• Transport links to London</li>
-                </ul>
-              </div>
-            </div>
-
-            <div
-              className={`relative transition-all duration-800 ${
-                homesHasIntersected
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-10"
-              }`}
-              style={{ transitionDelay: "1000ms" }}
-            >
-              <div className="bg-gradient-to-br from-emerald-400 to-teal-500 rounded-3xl p-8 text-white">
-                <h3 className="text-3xl font-bold mb-6 font-display">
-                  Our Approach
-                </h3>
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1 animate-rotate-slow">
-                      <span className="text-sm">1</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2 font-heading">
-                        Individual Care Plans
-                      </h4>
-                      <p className="text-sm opacity-90 font-sans">
-                        Tailored support for each young person&apos;s unique
-                        needs and goals.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div
-                      className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1 animate-rotate-slow"
-                      style={{ animationDelay: "2s" }}
-                    >
-                      <span className="text-sm">2</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2 font-heading">
-                        Educational Support
-                      </h4>
-                      <p className="text-sm opacity-90 font-sans">
-                        Dedicated support for academic achievement and personal
-                        development.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div
-                      className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1 animate-rotate-slow"
-                      style={{ animationDelay: "4s" }}
-                    >
-                      <span className="text-sm">3</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2 font-heading">
-                        Life Skills Development
-                      </h4>
-                      <p className="text-sm opacity-90 font-sans">
-                        Preparing young people for independence and future
-                        success.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* House Gallery */}
-          <div className="mt-20">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4 font-display">
-                Aylett Close Gallery
-              </h3>
-              <p className="text-lg text-gray-600 font-sans">
-                Take a look inside our beautiful, purpose-built home
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
-                  src: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Beautiful home exterior",
-                  title: "Home Exterior",
-                  description: "Welcoming facade with secure entrance",
+                  icon: "📈",
+                  title: "Educational Progress",
+                  description:
+                    "Young people have shown significant improvement in their academic performance and engagement with learning.",
+                  stat: "85% improvement in attendance",
                 },
                 {
-                  src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Comfortable living room",
-                  title: "Living Room",
-                  description: "Spacious and comfortable common area",
+                  icon: "🤝",
+                  title: "Social Skills Development",
+                  description:
+                    "Building meaningful relationships and developing essential life skills for independent living.",
+                  stat: "100% of young people report feeling supported",
                 },
                 {
-                  src: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Modern kitchen",
-                  title: "Kitchen",
-                  description: "Fully equipped modern kitchen",
+                  icon: "🏠",
+                  title: "Family Reunification",
+                  description:
+                    "Supporting families to rebuild relationships and work towards positive outcomes together.",
+                  stat: "90% successful family contact maintained",
                 },
-                {
-                  src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Study area",
-                  title: "Study Area",
-                  description: "Quiet space for learning and homework",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Bedroom",
-                  title: "Bedroom",
-                  description: "Private and comfortable sleeping area",
-                },
-                {
-                  src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                  alt: "Garden area",
-                  title: "Garden",
-                  description: "Beautiful outdoor space for relaxation",
-                },
-              ].map((room, index) => (
+              ].map((story, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 ${
-                    homesHasIntersected
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-10"
+                  className={`bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-3xl p-8 hover:shadow-xl transition-all duration-300 ${
+                    impactHasIntersected
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 -translate-x-20"
                   }`}
-                  style={{
-                    transitionDelay: `${index * 100 + 200}ms`,
-                    transitionDuration: "800ms",
-                  }}
+                  style={{ transitionDelay: `${index * 200}ms` }}
                 >
-                  <div className="relative h-64 overflow-hidden">
-                    <Image
-                      src={room.src}
-                      alt={room.alt}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute bottom-4 left-4 right-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <h4 className="text-lg font-bold mb-1 font-heading">
-                        {room.title}
-                      </h4>
-                      <p className="text-sm opacity-90 font-sans">
-                        {room.description}
+                  <div className="flex items-start space-x-4">
+                    <div className="text-4xl">{story.icon}</div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 font-heading">
+                        {story.title}
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300 mb-3 font-sans">
+                        {story.description}
                       </p>
+                      <div className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                        {story.stat}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section
-        id="team"
-        ref={teamRef}
-        className={`py-24 bg-white relative transition-all duration-1000 ${
-          teamHasIntersected
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-20"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6 font-display">
-              Meet Our{" "}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Team
-              </span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-sans">
-              Experienced professionals dedicated to making a real difference in
-              young people&apos;s lives.
-            </p>
-            <div className="mt-8 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-emerald-600 font-display">
-                  15+
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Years Experience
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-teal-600 font-display">
-                  100%
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Qualified Staff
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-600 font-display">
-                  24/7
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Support Available
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-3xl animate-scale-in">
-              <div className="text-center">
-                <div className="relative mb-6">
-                  <Image
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                    alt="Ahmed Jama"
-                    width={200}
-                    height={200}
-                    className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-emerald-500"
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2 font-heading">
-                  Ahmed Jama
-                </h3>
-                <p className="text-emerald-600 font-semibold mb-4 font-sans">
-                  Registered Manager
-                </p>
-                <p className="text-gray-600 mb-4 font-sans">
-                  With 15 years of experience in social care, Ahmed leads our
-                  team with compassion and expertise.
-                </p>
-                <div className="text-sm text-gray-500 font-sans">
-                  <p>• BA (Hons) Social Work - Bournemouth University</p>
-                  <p>• Post Graduate Certificate in Mental Health</p>
-                  <p>• Level 5 Diploma in Leadership and Management</p>
-                </div>
-              </div>
-            </div>
 
             <div
-              className="bg-gradient-to-br from-teal-50 to-cyan-50 p-8 rounded-3xl animate-scale-in"
-              style={{ animationDelay: "0.3s" }}
+              className={`relative ${
+                impactHasIntersected
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-20"
+              } transition-all duration-1000`}
+              style={{ transitionDelay: "600ms" }}
             >
-              <div className="text-center">
-                <div className="relative mb-6">
-                  <Image
-                    src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                    alt="Farxiya Ismail"
-                    width={200}
-                    height={200}
-                    className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-teal-500"
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2 font-heading">
-                  Farxiya Ismail
-                </h3>
-                <p className="text-teal-600 font-semibold mb-4 font-sans">
-                  Responsible Individual
-                </p>
-                <p className="text-gray-600 mb-4 font-sans">
-                  With 20 years of experience, Farxiya ensures the highest
-                  standards of care and compliance.
-                </p>
-                <div className="text-sm text-gray-500 font-sans">
-                  <p>• Business and Management Training</p>
-                  <p>• Level 5 Health and Social Care</p>
-                  <p>• Citizens Advice Bureau Experience</p>
-                </div>
-              </div>
+              <Image
+                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Success story"
+                width={600}
+                height={400}
+                className="rounded-3xl shadow-2xl"
+              />
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full opacity-20 animate-pulse"></div>
+              <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full opacity-20 animate-pulse delay-1000"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Careers Section */}
+      {/* Call to Action */}
       <section
-        id="careers"
-        ref={careersRef}
-        className={`py-24 bg-gradient-to-br from-emerald-50 to-teal-50 relative transition-all duration-1000 ${
-          careersHasIntersected
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-20"
-        }`}
+        ref={ctaRef}
+        className="py-20 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6 font-display">
-              Join Our{" "}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Mission
-              </span>
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Ready to Make a Difference?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-sans">
-              Be part of a team that&apos;s making a real difference in young
-              people&apos;s lives.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12 font-sans">
+              Whether you&apos;re looking to make a referral, join our team, or
+              learn more about our services, we&apos;re here to help.
             </p>
-            <div className="mt-8 grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 font-display">
-                  £25k+
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Starting Salary
-                </div>
-              </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-teal-600 font-display">
-                  28
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Days Holiday
-                </div>
-              </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-cyan-600 font-display">
-                  100%
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Training Provided
-                </div>
-              </div>
-              <div className="text-center p-4 bg-white/50 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 font-display">
-                  Flexible
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Working Hours
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-white p-8 rounded-3xl shadow-xl animate-fade-in-left">
-              <div className="relative mb-6">
-                <Image
-                  src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                  alt="Team collaboration"
-                  width={500}
-                  height={300}
-                  className="w-full h-64 object-cover rounded-2xl"
-                />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 font-heading">
-                Why Work With Us?
-              </h3>
-              <div className="space-y-4">
-                {[
-                  "Meaningful work that changes lives",
-                  "Comprehensive training and development",
-                  "Supportive team environment",
-                  "Competitive benefits package",
-                  "Opportunities for career growth",
-                ].map((benefit, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center space-x-3 animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center animate-pulse-glow">
-                      <span className="text-white text-sm">✓</span>
-                    </div>
-                    <span className="text-gray-700 font-sans">{benefit}</span>
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <Link href="/referrals" className="group">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                  <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl">📞</span>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 font-heading">
+                    Make a Referral
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 font-sans">
+                    Contact us to discuss how we can support a young person
+                  </p>
+                  <div className="text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform">
+                    Get Started →
+                  </div>
+                </div>
+              </Link>
 
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-8 rounded-3xl text-white animate-fade-in-right">
-              <h3 className="text-2xl font-bold mb-6 font-heading">
-                Current Opportunities
-              </h3>
-              <div className="space-y-4">
-                <div className="bg-white/20 p-4 rounded-xl animate-scale-in">
-                  <h4 className="font-semibold mb-2 font-heading">
-                    Residential Care Workers
-                  </h4>
-                  <p className="text-sm opacity-90 font-sans">
-                    Full-time positions available for experienced care workers.
+              <Link href="/careers" className="group">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                  <div className="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl">💼</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 font-heading">
+                    Join Our Team
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 font-sans">
+                    Explore career opportunities in children&apos;s residential
+                    care
                   </p>
+                  <div className="text-teal-600 dark:text-teal-400 font-semibold group-hover:translate-x-2 transition-transform">
+                    View Jobs →
+                  </div>
                 </div>
-                <div
-                  className="bg-white/20 p-4 rounded-xl animate-scale-in"
-                  style={{ animationDelay: "0.2s" }}
-                >
-                  <h4 className="font-semibold mb-2 font-heading">
-                    Shift Leaders
-                  </h4>
-                  <p className="text-sm opacity-90 font-sans">
-                    Leadership opportunities for qualified professionals.
+              </Link>
+
+              <Link href="/contact" className="group">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl">📧</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 font-heading">
+                    Get in Touch
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 font-sans">
+                    Have questions? We&apos;d love to hear from you
                   </p>
+                  <div className="text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform">
+                    Contact Us →
+                  </div>
                 </div>
-                <div
-                  className="bg-white/20 p-4 rounded-xl animate-scale-in"
-                  style={{ animationDelay: "0.4s" }}
-                >
-                  <h4 className="font-semibold mb-2 font-heading">
-                    Bank Staff
-                  </h4>
-                  <p className="text-sm opacity-90 font-sans">
-                    Flexible working arrangements for qualified staff.
-                  </p>
-                </div>
-              </div>
-              <button className="mt-6 w-full bg-white text-emerald-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors animate-shimmer">
-                View All Positions
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section
-        id="contact"
-        ref={contactRef}
-        className={`py-24 bg-white relative transition-all duration-1000 ${
-          contactHasIntersected
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-20"
-        }`}
-      >
+      {/* Contact Form Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6 font-display">
-              Get In{" "}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+              Get in{" "}
               <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Touch
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-sans">
-              Ready to make a referral or learn more about our services?
-              We&apos;re here to help.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
+              We&apos;re here to help. Contact us for referrals, questions, or
+              to learn more about our services.
             </p>
-            <div className="mt-8 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="text-center p-4 bg-emerald-50 rounded-xl">
-                <div className="text-2xl font-bold text-emerald-600 font-display">
-                  24/7
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Emergency Line
-                </div>
-              </div>
-              <div className="text-center p-4 bg-teal-50 rounded-xl">
-                <div className="text-2xl font-bold text-teal-600 font-display">
-                  48hr
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Response Time
-                </div>
-              </div>
-              <div className="text-center p-4 bg-cyan-50 rounded-xl">
-                <div className="text-2xl font-bold text-cyan-600 font-display">
-                  100%
-                </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Confidential
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 relative overflow-hidden transition-colors duration-300">
+              {/* Background decoration */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900 dark:to-teal-900 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+
+              <div className="relative z-10">
+                <div className="text-center mb-8">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white text-2xl">📝</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 font-heading">
+                    Send us a message
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 font-sans">
+                    We&apos;ll get back to you within 24 hours
+                  </p>
+                </div>
+
+                <form className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <label
+                        htmlFor="firstName"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                      >
+                        First Name *
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          required
+                          className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg"
+                          placeholder="Your first name"
+                        />
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                          <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            👤
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <label
+                        htmlFor="lastName"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                      >
+                        Last Name *
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          required
+                          className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg"
+                          placeholder="Your last name"
+                        />
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                          <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            👤
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                    >
+                      Email Address *
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg"
+                        placeholder="your.email@example.com"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                          📧
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                    >
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg"
+                        placeholder="Your phone number"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                          📞
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group">
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                    >
+                      Subject *
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="subject"
+                        name="subject"
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg appearance-none"
+                      >
+                        <option value="">Select a subject</option>
+                        <option value="referral">Make a Referral</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="careers">Career Opportunities</option>
+                        <option value="activities">
+                          Activities Information
+                        </option>
+                        <option value="other">Other</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                          📋
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group">
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                    >
+                      Message *
+                    </label>
+                    <div className="relative">
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={6}
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-2xl focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-900 focus:border-emerald-500 transition-all duration-300 hover:border-emerald-300 group-hover:shadow-lg resize-none"
+                        placeholder="Please provide details about your inquiry..."
+                      ></textarea>
+                      <div className="absolute top-3 right-3">
+                        <span className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                          💬
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      className="group relative w-full py-4 px-8 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center">
+                        <span className="mr-2">Send Message</span>
+                        <span className="group-hover:translate-x-1 transition-transform duration-300">
+                          →
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
             <div className="space-y-8">
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-3xl animate-fade-in-left">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6 font-heading">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
                   Contact Information
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center animate-bounce-gentle">
-                      <span className="text-white">📍</span>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl">📞</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 font-heading">
-                        Address
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                        24/7 Emergency Line
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 font-sans">
+                        For urgent referrals and emergency situations
                       </p>
-                      <p className="text-gray-600 font-sans">
-                        6 Aylett Close, Canvey Island, SS8 8AN
+                      <p className="text-red-600 dark:text-red-400 font-semibold mt-2">
+                        Available around the clock
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div
-                      className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center animate-bounce-gentle"
-                      style={{ animationDelay: "0.5s" }}
-                    >
-                      <span className="text-white">📧</span>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl">📧</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 font-heading">
-                        Email
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                        Email Support
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 font-sans">
+                        General inquiries and referrals
                       </p>
-                      <p className="text-gray-600 font-sans">
-                        info@masifagroupltd.com
+                      <p className="text-teal-600 dark:text-teal-400 font-semibold mt-2">
+                        info@masifagroup.co.uk
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div
-                      className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center animate-bounce-gentle"
-                      style={{ animationDelay: "1s" }}
-                    >
-                      <span className="text-white">👤</span>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl">📍</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 font-heading">
-                        Manager
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                        Location
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 font-sans">
+                        Canvey Island, Essex
                       </p>
-                      <p className="text-gray-600 font-sans">
-                        Ahmed Jama - manager@masifagroupltd.com
+                      <p className="text-blue-600 dark:text-blue-400 font-semibold mt-2">
+                        By appointment only
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-8 rounded-3xl text-white animate-fade-in-right">
-              <h3 className="text-2xl font-bold mb-6 font-heading">
-                Send Us a Message
-              </h3>
-              <form className="space-y-6">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full p-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 font-sans"
-                  />
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+                  Office Hours
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-300 font-sans">
+                      Monday - Friday
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      9:00 AM - 5:00 PM
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-300 font-sans">
+                      Saturday
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      10:00 AM - 2:00 PM
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-300 font-sans">
+                      Sunday
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      Emergency Only
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full p-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 font-sans"
-                  />
-                </div>
-                <div>
-                  <select className="w-full p-4 rounded-xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-white/50 font-sans">
-                    <option value="" className="text-gray-800">
-                      Reason for Contact
-                    </option>
-                    <option value="referral" className="text-gray-800">
-                      Make a Referral
-                    </option>
-                    <option value="careers" className="text-gray-800">
-                      Career Opportunities
-                    </option>
-                    <option value="general" className="text-gray-800">
-                      General Inquiry
-                    </option>
-                  </select>
-                </div>
-                <div>
-                  <textarea
-                    placeholder="Your Message"
-                    rows={4}
-                    className="w-full p-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 resize-none font-sans"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-white text-emerald-600 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors animate-shimmer font-heading"
-                >
-                  Send Message
-                </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center animate-pulse-glow">
-                  <span className="text-white font-bold text-lg">M</span>
-                </div>
-                <span className="text-2xl font-bold font-heading">
-                  Masifa Group Ltd
-                </span>
-              </div>
-              <p className="text-gray-300 mb-6 max-w-md font-sans">
-                Creating safe, nurturing environments where young people can
-                flourish, grow, and build the foundation for their brightest
-                future.
-              </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center hover:bg-emerald-700 transition-colors cursor-pointer animate-bounce-gentle">
-                  <span className="text-sm">📧</span>
-                </div>
-                <div
-                  className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center hover:bg-emerald-700 transition-colors cursor-pointer animate-bounce-gentle"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <span className="text-sm">📞</span>
-                </div>
-                <div
-                  className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center hover:bg-emerald-700 transition-colors cursor-pointer animate-bounce-gentle"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <span className="text-sm">📍</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4 font-heading">
-                Quick Links
-              </h3>
-              <div className="space-y-2">
-                {["About Us", "Our Homes", "Team", "Careers", "Contact"].map(
-                  (link) => (
-                    <button
-                      key={link}
-                      onClick={() =>
-                        scrollToSection(link.toLowerCase().replace(" ", ""))
-                      }
-                      className="block text-gray-300 hover:text-white transition-colors font-sans"
-                    >
-                      {link}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4 font-heading">
-                Contact Info
-              </h3>
-              <div className="space-y-2 text-gray-300 font-sans">
-                <p>6 Aylett Close</p>
-                <p>Canvey Island, SS8 8AN</p>
-                <p>info@masifagroupltd.com</p>
-                <p>Manager: Ahmed Jama</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-300 font-sans">
-            <p>&copy; 2025 Masifa Group Ltd. All Rights Reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
